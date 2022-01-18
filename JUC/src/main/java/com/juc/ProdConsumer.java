@@ -12,6 +12,29 @@ import java.util.concurrent.locks.ReentrantLock;
  *         此时资源n的值减小到0，然后C获取到线程执行权对资源n进行++操作，同时唤醒所有线程，如果此时线程A被唤醒，此时线程A会接着往下执行，
  *         因为A线程在最开始已经执行到if内部，此时被唤醒后会继续向下执行。不会再对资源n进行判断，此时资源n的值就会变成2，造成了资源的虚假唤醒。
  *
+ * synchronized和ReentrantLock异同
+ *    1.原始构成
+ *      synchronized关键字基于jvm层面
+ *      底层基于monitorenter
+ *      lock是基于api层面
+ *
+ *    2.使用方法：
+ *      synchronized不需要用户手动去释放锁，当synchronized代码执行完成之后系统会自动让线程释放对锁的占用
+ *      ReentrantLock则需要用户去手动释放锁，若没有手动释放锁则可能会导致死锁。
+ *      需要lock()和Unlock()方法配合try/finally语句块来完成
+ *
+ *    3.等待是否可以中断
+ *       synchronized不可中断，除非是抛出异常或者是正常执行完成
+ *       ReentrantLock()可以中断
+ *
+ *    4.加锁是否公平
+ *       synchronize非公平锁
+ *       reentrantlock()两者都可以，通过构造方法传入boolean值，true是公平锁，false是非公平锁
+ *
+ *    5.锁绑定多个条件condition
+ *    synchronize没有
+ *    reentrantlock用来实现分组唤醒，可以精确唤醒
+ *
  */
 public class ProdConsumer {
 
